@@ -1,0 +1,13 @@
+# Core inference stack — exact versions required for panoramic Rolling RoPE patches
+vllm==0.11.0
+transformers==4.57.0
+
+# PyTorch — vLLM 0.11.0 pins torch 2.8.0 and installs the matching CUDA 12.8
+# dependencies on Linux. Do not pre-install a different CUDA wheel such as cu124.
+torch==2.8.0
+
+# Vision & utilities
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+tqdm>=4.65.0
