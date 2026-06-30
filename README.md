@@ -37,55 +37,6 @@ Instead of relying on fragmented local exploration from a fixed initial view, EA
 - GRPO training improves search accuracy and exploration efficiency.
 - Lightweight evaluation code for reproducing the 50-sample Matterport3D result.
 
-## Results
-
-Quantitative results on the EAGLE-360 test set. `Acc.` is the adaptive spherical bFOV accuracy, `GCD` is mean great-circle distance, and `GCD@50°` is the percentage of predictions within 50°. Top-three performances are highlighted with <span style="background-color:#ffe6e6">red</span>, <span style="background-color:#e8f5e9">green</span>, and <span style="background-color:#e8f0ff">blue</span>.
-
-<table>
-  <thead>
-    <tr>
-      <th rowspan="2">Method</th>
-      <th>Acc.</th>
-      <th>GCD</th>
-      <th>GCD @</th>
-      <th>Fail</th>
-      <th colspan="6">All Directions Acc. (%) ↑</th>
-    </tr>
-    <tr>
-      <th>(%) ↑</th>
-      <th>(°) ↓</th>
-      <th>50° (%) ↑</th>
-      <th>(%) ↓</th>
-      <th>Front</th>
-      <th>Back</th>
-      <th>Left</th>
-      <th>Right</th>
-      <th>Top</th>
-      <th>Bottom</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td colspan="11"><b>Proprietary Models</b></td></tr>
-    <tr><td>GPT-4o</td><td align="right">7.50</td><td align="right">44.26</td><td align="right">80.00</td><td align="right">6.39</td><td align="right">10.31</td><td align="right">2.70</td><td align="right">6.67</td><td align="right">8.89</td><td align="right">25</td><td align="right">0</td></tr>
-    <tr><td>Gemini-2.5-Pro</td><td align="right">20.28</td><td align="right">48.89</td><td align="right">78.61</td><td align="right">18.33</td><td align="right">21.65</td><td align="right">4.05</td><td align="right">25.56</td><td align="right">25.56</td><td align="right" bgcolor="#e8f0ff">50</td><td align="right" bgcolor="#e8f0ff">20</td></tr>
-    <tr><td colspan="11"><b>Open-source Models</b></td></tr>
-    <tr><td>Gemma-3-4b-it</td><td align="right">1.39</td><td align="right">95.23</td><td align="right">25</td><td align="right">10.83</td><td align="right">5.15</td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>Gemma-3-12b-it</td><td align="right">2.78</td><td align="right">88.11</td><td align="right">30.83</td><td align="right">12.78</td><td align="right">4.12</td><td align="right">0</td><td align="right">0</td><td align="right">6.67</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>InternVL3.5-4b</td><td align="right">4.72</td><td align="right">77.7</td><td align="right">33.06</td><td align="right">4.17</td><td align="right">2.06</td><td align="right">2.70</td><td align="right">3.33</td><td align="right">11.11</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>InternVL3.5-8b</td><td align="right">5.28</td><td align="right">82.22</td><td align="right">30</td><td align="right">3.89</td><td align="right">19.59</td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>Qwen2.5-VL-7B-Instruct</td><td align="right">2.78</td><td align="right">101.10</td><td align="right">22.60</td><td align="right">20.28</td><td align="right">9.28</td><td align="right">0</td><td align="right">1.11</td><td align="right">0</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>Qwen3-VL-4B-Instruct</td><td align="right">8.33</td><td align="right">54.89</td><td align="right">57.22</td><td align="right">6.11</td><td align="right">15.46</td><td align="right">1.35</td><td align="right">4.44</td><td align="right">11.11</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>Qwen3-VL-8B-Instruct</td><td align="right">8.33</td><td align="right">54.72</td><td align="right">69.17</td><td align="right">13.06</td><td align="right">20.62</td><td align="right">4.05</td><td align="right">3.33</td><td align="right">4.44</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td colspan="11"><b>Fine-tuned Models</b></td></tr>
-    <tr><td>HVS-3B</td><td align="right">11.11</td><td align="right">41.77</td><td align="right">77.54</td><td align="right">7.22</td><td align="right">18.56</td><td align="right">10.81</td><td align="right">7.87</td><td align="right">7.78</td><td align="right">0</td><td align="right">0</td></tr>
-    <tr><td>EAGLE-360 (w/o FOV)</td><td align="right">39.44</td><td align="right">17.54</td><td align="right">94.02</td><td align="right" bgcolor="#e8f5e9">1.11</td><td align="right" bgcolor="#e8f0ff">48.45</td><td align="right">28.38</td><td align="right">41.11</td><td align="right">36.67</td><td align="right" bgcolor="#e8f0ff">50</td><td align="right" bgcolor="#ffe6e6"><b>40</b></td></tr>
-    <tr><td>EAGLE-360 (w/o RoPE Rolling)</td><td align="right" bgcolor="#e8f0ff">46.01</td><td align="right" bgcolor="#e8f5e9">16.15</td><td align="right" bgcolor="#e8f0ff">94.72</td><td align="right">2.7</td><td align="right">46.18</td><td align="right" bgcolor="#e8f5e9">45.65</td><td align="right" bgcolor="#e8f5e9">45.25</td><td align="right" bgcolor="#e8f5e9">47.15</td><td align="right" bgcolor="#e8f5e9">60</td><td align="right" bgcolor="#e8f5e9">31.58</td></tr>
-    <tr><td>EAGLE-360 (w/o GRPO)</td><td align="right" bgcolor="#e8f5e9">46.94</td><td align="right" bgcolor="#ffe6e6"><b>14.03</b></td><td align="right" bgcolor="#ffe6e6"><b>97.22</b></td><td align="right" bgcolor="#ffe6e6"><b>0.83</b></td><td align="right" bgcolor="#e8f5e9">55.67</td><td align="right" bgcolor="#e8f0ff">41.89</td><td align="right" bgcolor="#e8f0ff">43.44</td><td align="right" bgcolor="#e8f0ff">44.44</td><td align="right" bgcolor="#ffe6e6"><b>75</b></td><td align="right" bgcolor="#ffe6e6"><b>40</b></td></tr>
-    <tr><td><b>EAGLE-360</b></td><td align="right" bgcolor="#ffe6e6"><b>64.44</b></td><td align="right" bgcolor="#e8f0ff">16.89</td><td align="right" bgcolor="#e8f5e9">96.12</td><td align="right" bgcolor="#e8f0ff">2.05</td><td align="right" bgcolor="#ffe6e6"><b>72.16</b></td><td align="right" bgcolor="#ffe6e6"><b>60.81</b></td><td align="right" bgcolor="#ffe6e6"><b>55.56</b></td><td align="right" bgcolor="#ffe6e6"><b>71.11</b></td><td align="right" bgcolor="#ffe6e6"><b>75</b></td><td align="right" bgcolor="#ffe6e6"><b>40</b></td></tr>
-  </tbody>
-</table>
-
-For the lightweight public eval split in this repository, our local reproduction with `eval.py` and the step-1000 checkpoint reaches **31/50 = 62.0%** bFOV accuracy.
 
 ## Getting Started
 
@@ -152,8 +103,8 @@ Quick 50-sample evaluation:
 ```bash
 python eval.py \
   --model ./checkpoints/hf_merged \
-  --test_file data/test.json \
-  --pano_dir /data/matterport3d \
+  --test_file ./eagle360_test/test.json \
+  --pano_dir ./eagle360_test/images \
   --n_samples 50
 ```
 
@@ -162,24 +113,12 @@ Full evaluation:
 ```bash
 python eval.py \
   --model ./checkpoints/hf_merged \
-  --test_file data/test.json \
-  --pano_dir /data/matterport3d
+  --test_file ./eagle360_test/test.json \
+  --pano_dir ./eagle360_test/images
 ```
 
 Results are saved as `eval_{model_name}_{timestamp}.json`.
 
-## Repository Structure
-
-```text
-panoramic-360-eval/
-├── assets/              # Teaser and pipeline figures
-├── data/                # Test metadata and data preparation notes
-├── patches/             # vLLM and transformers panoramic patches
-├── eval.py              # Main evaluator
-├── install.sh           # Environment setup and patch installation
-├── requirements.txt
-└── upload_model.sh
-```
 
 ## Citation
 
