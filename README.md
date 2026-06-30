@@ -132,4 +132,4 @@ Results are saved as `eval_{model_name}_{timestamp}.json`.
 
 ## Acknowledgements
 
-The implementation builds on [vLLM](https://github.com/vllm-project/vllm), [Transformers](https://github.com/huggingface/transformers), and Qwen3-VL. The patch files in `patches/` follow the licenses of their upstream projects.
+The implementation builds on [vLLM](https://github.com/vllm-project/vllm), [Transformers](https://github.com/huggingface/transformers), and [Qwen3-VL](https://github.com/qwenlm/qwen3-vl). The patch files in `patches/` follow the licenses of their upstream projects.
