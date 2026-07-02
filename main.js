@@ -61,8 +61,8 @@ const demos = [
   },
   {
     image: 'assets/demo-376.webp',
-    target: 'a black refrigerator with a shiny handle',
-    title: 'Find a black refrigerator with a shiny handle in the panorama.',
+    target: 'a black refrigerator',
+    title: 'Search the panorama and find a black refrigerator.',
     body: GUIDE_BODY,
     challenge: 'Challenge: Hard Object Search',
     azimuth: -146.2529901330173,
