@@ -110,21 +110,26 @@ h1 {
 }
 
 .authors,
-.affiliations {
+.affiliations,
+.corresponding {
   margin: 3px 0 0;
   color: var(--muted);
   font-size: clamp(0.9rem, 1.3vw, 1rem);
 }
 
 .authors sup,
-.affiliations sup {
+.affiliations sup,
+.corresponding sup {
   color: var(--cyan);
   font-size: 0.7em;
   font-weight: 850;
   margin-left: 1px;
 }
 
-.affiliations sup { margin-right: 2px; }
+.affiliations sup,
+.corresponding sup { margin-right: 2px; }
+
+.corresponding { margin-top: 1px; }
 
 .interactive-stage {
   position: relative;
