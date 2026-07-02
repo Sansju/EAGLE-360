@@ -15,6 +15,10 @@ const demoChallenge = document.getElementById('demoChallenge');
 const targetLabel = document.getElementById('targetLabel');
 const prevDemo = document.getElementById('prevDemo');
 const nextDemo = document.getElementById('nextDemo');
+const caseSlides = Array.from(document.querySelectorAll('[data-case-slide]'));
+const prevCase = document.getElementById('prevCase');
+const nextCase = document.getElementById('nextCase');
+const caseCounter = document.getElementById('caseCounter');
 
 const GUIDE_BODY = 'Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.';
 
@@ -377,6 +381,31 @@ prevDemo.addEventListener('click', event => handleNav(event, -1));
 nextDemo.addEventListener('click', event => handleNav(event, 1));
 prevDemo.addEventListener('pointerdown', event => event.stopPropagation());
 nextDemo.addEventListener('pointerdown', event => event.stopPropagation());
+
+
+let activeCaseIndex = 0;
+
+function updateCaseCarousel() {
+  if (!caseSlides.length) return;
+  caseSlides.forEach((slide, index) => {
+    const isActive = index === activeCaseIndex;
+    slide.classList.toggle('active', isActive);
+    slide.setAttribute('aria-hidden', String(!isActive));
+  });
+  if (caseCounter) caseCounter.textContent = `${activeCaseIndex + 1} / ${caseSlides.length}`;
+}
+
+function navigateCase(direction) {
+  if (!caseSlides.length) return;
+  activeCaseIndex = (activeCaseIndex + direction + caseSlides.length) % caseSlides.length;
+  updateCaseCarousel();
+}
+
+if (prevCase && nextCase) {
+  prevCase.addEventListener('click', () => navigateCase(-1));
+  nextCase.addEventListener('click', () => navigateCase(1));
+  updateCaseCarousel();
+}
 
 window.addEventListener('resize', resize);
 

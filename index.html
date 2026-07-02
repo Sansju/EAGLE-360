@@ -189,21 +189,42 @@
 
     <section class="section cases-section">
       <div class="section-copy wide">
-        <p class="section-kicker">Qualitative case</p>
+        <p class="section-kicker">Qualitative cases</p>
         <h2>Multi-turn projection makes the search path inspectable.</h2>
         <p>
-          This example shows how EAGLE-360 progressively centers the target and reduces FOV. The trajectory records the model's reasoning, the projection tool call, and the final spherical prediction.
+          These examples show how EAGLE-360 progressively centers the target and reduces FOV. Each trajectory records the model's reasoning, the projection tool call, and the final spherical prediction.
         </p>
       </div>
-      <div class="case-grid case-grid-single">
-        <article class="case-card">
-          <img src="assets/case-floral.webp" loading="lazy" decoding="async" alt="Qualitative case locating a decorative floral arrangement in a vase.">
-          <div>
-            <span>Case 01</span>
-            <h3>Decorative floral arrangement</h3>
-            <p>The agent starts from a broad bedroom panorama, shifts to the left side wall, and zooms until the floral arrangement is centered with a small angular error.</p>
-          </div>
-        </article>
+      <div class="case-carousel" aria-label="Qualitative case carousel">
+        <button class="case-nav case-nav-prev" id="prevCase" type="button" aria-label="Previous qualitative case"></button>
+        <div class="case-track">
+          <article class="case-card active" data-case-slide>
+            <img src="assets/case-floral.webp" loading="lazy" decoding="async" alt="Qualitative case locating a decorative floral arrangement in a vase.">
+            <div>
+              <span>Case 01</span>
+              <h3>Decorative floral arrangement</h3>
+              <p>The agent starts from a broad bedroom panorama, shifts to the left side wall, and zooms until the floral arrangement is centered with a small angular error.</p>
+            </div>
+          </article>
+          <article class="case-card" data-case-slide>
+            <img src="assets/case-television.webp" loading="lazy" decoding="async" alt="Qualitative case locating a flat-screen television.">
+            <div>
+              <span>Case 02</span>
+              <h3>Flat-screen television</h3>
+              <p>The target is visible but small in the full panorama. Tool calls refine the view from a room-level hypothesis to the final screen coordinates.</p>
+            </div>
+          </article>
+          <article class="case-card" data-case-slide>
+            <img src="assets/case-handbag.webp" loading="lazy" decoding="async" alt="Qualitative case locating a black leather handbag.">
+            <div>
+              <span>Case 03</span>
+              <h3>Black leather handbag</h3>
+              <p>The model tracks a small object on a chair through successive projections, showing robust search under cluttered indoor geometry.</p>
+            </div>
+          </article>
+        </div>
+        <button class="case-nav case-nav-next" id="nextCase" type="button" aria-label="Next qualitative case"></button>
+        <div class="case-counter" id="caseCounter" aria-live="polite">1 / 3</div>
       </div>
     </section>
 

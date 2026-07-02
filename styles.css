@@ -575,11 +575,14 @@ h1 {
   background: #f6f2ea;
 }
 
-.case-grid {
-  display: grid;
-  gap: 22px;
+.case-carousel {
+  position: relative;
   max-width: 1180px;
   margin: clamp(30px, 4vw, 50px) auto 0;
+}
+
+.case-track {
+  display: block;
 }
 
 .case-card {
@@ -590,6 +593,14 @@ h1 {
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 18px 44px rgba(7, 16, 19, 0.1);
+}
+
+.case-card[data-case-slide] {
+  display: none;
+}
+
+.case-card[data-case-slide].active {
+  display: grid;
 }
 
 .case-card img {
@@ -603,6 +614,66 @@ h1 {
 .case-card div {
   padding: clamp(20px, 3vw, 34px);
   align-self: start;
+}
+
+.case-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: clamp(42px, 4.6vw, 58px);
+  height: clamp(74px, 8vw, 104px);
+  transform: translateY(-50%);
+  border: 0;
+  background: rgba(7, 16, 19, 0.26);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  opacity: 0.78;
+  transition: background 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.case-nav:hover {
+  background: rgba(7, 16, 19, 0.44);
+  opacity: 1;
+}
+
+.case-nav:active { transform: translateY(-50%) scale(0.96); }
+
+.case-nav::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: clamp(12px, 1.8vw, 18px) solid transparent;
+  border-bottom: clamp(12px, 1.8vw, 18px) solid transparent;
+}
+
+.case-nav-prev {
+  left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.case-nav-next {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.case-nav-prev::before { border-right: clamp(16px, 2.3vw, 24px) solid rgba(255, 255, 255, 0.9); }
+.case-nav-next::before { border-left: clamp(16px, 2.3vw, 24px) solid rgba(255, 255, 255, 0.9); }
+
+.case-counter {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  z-index: 2;
+  border: 1px solid rgba(7, 16, 19, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #132126;
+  padding: 7px 11px;
+  font-size: 0.82rem;
+  font-weight: 850;
+  box-shadow: 0 10px 26px rgba(7, 16, 19, 0.12);
 }
 
 .resources-section { background: #fffaf2; }
@@ -679,4 +750,6 @@ h1 {
   .case-card { grid-template-columns: 1fr; }
   .section { padding: 48px 18px; }
   .case-card img { border-right: 0; border-bottom: 1px solid rgba(7, 16, 19, 0.1); }
+  .case-nav { width: 36px; height: 72px; }
+  .case-counter { top: 10px; right: 10px; }
 }
