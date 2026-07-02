@@ -15,21 +15,23 @@ const targetLabel = document.getElementById('targetLabel');
 const prevDemo = document.getElementById('prevDemo');
 const nextDemo = document.getElementById('nextDemo');
 
+const GUIDE_BODY = 'Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.';
+
 const demos = [
   {
-    image: 'assets/demo-panorama.jpg',
+    image: 'assets/demo-panorama.webp',
     target: 'pink stool',
-    title: 'Locate the pink stool in the distorted bottom region.',
-    body: 'Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.',
+    title: 'Find the pink stool in the panorama.',
+    body: GUIDE_BODY,
     azimuth: 137.65391583657777,
     elevation: -74.76117453970583,
     fov: 100,
   },
   {
-    image: 'assets/demo-play-boat.jpg',
+    image: 'assets/demo-play-boat.webp',
     target: "colorful wooden children's play boat",
-    title: "Locate the colorful wooden children's play boat near the panorama boundary.",
-    body: 'This target sits close to the left-right seam after a 180° panorama rotation. Hold and drag to see how the projection tool turns a global 360° location into a local perspective crop.',
+    title: "Find the colorful wooden children's play boat in the panorama.",
+    body: GUIDE_BODY,
     azimuth: 177.32868871463714,
     elevation: 3.4507171963325236,
     fov: 100,
@@ -37,6 +39,7 @@ const demos = [
 ];
 
 const panoImg = new Image();
+panoImg.decoding = 'async';
 const sourceCanvas = document.createElement('canvas');
 const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
 let sourceData;

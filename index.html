@@ -6,6 +6,7 @@
   <title>EAGLE-360: Embodied Active Global-to-Local Exploration in 360°</title>
   <meta name="description" content="EAGLE-360 project page: active global-to-local exploration for object search in 360-degree panoramic scenes.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preload" as="image" href="assets/demo-panorama.webp" type="image/webp">
 </head>
 <body>
   <header class="hero" id="top">
@@ -31,7 +32,7 @@
       <canvas id="panoCanvas" aria-label="Equirectangular panorama demo"></canvas>
       <div class="demo-guide" aria-label="Demo instructions">
         <p class="demo-kicker" id="demoKicker">Interactive task demo · 1 / 2</p>
-        <h2 id="demoTitle">Locate the pink stool in the distorted bottom region.</h2>
+        <h2 id="demoTitle">Find the pink stool in the panorama.</h2>
         <p id="demoBody">Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.</p>
       </div>
       <button class="demo-nav demo-nav-prev" id="prevDemo" type="button" aria-label="Previous panorama"></button>
@@ -70,7 +71,7 @@
     </section>
 
     <section class="figure-section">
-      <img src="assets/teaser.png" alt="EAGLE-360 teaser showing panoramic target search challenges and global-to-local exploration.">
+      <img src="assets/teaser.png" loading="lazy" decoding="async" alt="EAGLE-360 teaser showing panoramic target search challenges and global-to-local exploration.">
       <p>
         Standard MLLMs struggle with polar distortion, seam continuity, and fragmented local exploration. EAGLE-360 uses the full panorama as a global prior, then narrows the search through active perspective projections.
       </p>
@@ -101,7 +102,7 @@
     </section>
 
     <section class="figure-section pipeline-section">
-      <img src="assets/pipeline.png" alt="EAGLE-360 training and inference pipeline.">
+      <img src="assets/pipeline.png" loading="lazy" decoding="async" alt="EAGLE-360 training and inference pipeline.">
       <p>
         The pipeline combines panoramic Rolling RoPE, supervised fine-tuning, and GRPO to elicit tool-calling spatial reasoning over continuous 360° scenes.
       </p>
