@@ -21,8 +21,8 @@ const GUIDE_BODY = 'Move across the panorama to read azimuth and elevation. Hold
 const demos = [
   {
     image: 'assets/demo-panorama.webp',
-    target: 'pink stool',
-    title: 'Find the pink stool in the panorama.',
+    target: 'a pink stool',
+    title: 'Search the panorama and find a pink stool.',
     body: GUIDE_BODY,
     challenge: 'Challenge: Polar Distortion',
     azimuth: 137.65391583657777,
@@ -31,8 +31,8 @@ const demos = [
   },
   {
     image: 'assets/demo-play-boat.webp',
-    target: "colorful wooden children's play boat",
-    title: "Find the colorful wooden children's play boat in the panorama.",
+    target: 'a wooden boat',
+    title: 'Search the panorama and find a wooden boat.',
     body: GUIDE_BODY,
     challenge: 'Challenge: Edge Continuity',
     azimuth: 177.32868871463714,
@@ -191,14 +191,11 @@ function updateCursorLabel() {
 function updateDemoTitle(target) {
   const prefix = document.createElement('span');
   prefix.className = 'demo-title-affix';
-  prefix.textContent = 'Find';
+  prefix.textContent = 'Search the panorama and find';
   const targetText = document.createElement('span');
   targetText.className = 'demo-target';
   targetText.textContent = target;
-  const suffix = document.createElement('span');
-  suffix.className = 'demo-title-affix';
-  suffix.textContent = 'in the panorama.';
-  demoTitle.replaceChildren(prefix, targetText, suffix);
+  demoTitle.replaceChildren(prefix, targetText);
 }
 
 function updateDemoText() {
