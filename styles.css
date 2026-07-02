@@ -173,6 +173,57 @@ h1 {
   line-height: 1.48;
 }
 
+
+.demo-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  width: clamp(44px, 5vw, 70px);
+  height: clamp(78px, 12vh, 132px);
+  transform: translateY(-50%);
+  border: 0;
+  background: rgba(7, 16, 19, 0.18);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 160ms ease, opacity 160ms ease, transform 160ms ease;
+  opacity: 0.72;
+}
+
+.demo-nav:hover {
+  background: rgba(7, 16, 19, 0.38);
+  opacity: 1;
+}
+
+.demo-nav:active { transform: translateY(-50%) scale(0.96); }
+
+.demo-nav::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: clamp(14px, 2.1vw, 24px) solid transparent;
+  border-bottom: clamp(14px, 2.1vw, 24px) solid transparent;
+}
+
+.demo-nav-prev {
+  left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.demo-nav-next {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.demo-nav-prev::before {
+  border-right: clamp(18px, 2.8vw, 30px) solid rgba(246, 242, 234, 0.78);
+}
+
+.demo-nav-next::before {
+  border-left: clamp(18px, 2.8vw, 30px) solid rgba(246, 242, 234, 0.78);
+}
+
 .cursor-label {
   position: absolute;
   left: 0;
@@ -416,6 +467,7 @@ h1 {
   .demo-guide { top: 12px; left: 12px; padding: 13px; }
   .demo-guide h2 { font-size: 1.12rem; }
   .demo-guide p:not(.demo-kicker) { font-size: 0.8rem; }
+  .demo-nav { width: 38px; height: 76px; }
   .projection-panel {
     left: 12px;
     right: 12px;

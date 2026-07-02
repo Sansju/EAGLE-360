@@ -8,25 +8,45 @@ const azReadout = document.getElementById('azReadout');
 const elReadout = document.getElementById('elReadout');
 const fovReadout = document.getElementById('fovReadout');
 const inspectState = document.getElementById('inspectState');
+const demoKicker = document.getElementById('demoKicker');
+const demoTitle = document.getElementById('demoTitle');
+const demoBody = document.getElementById('demoBody');
+const targetLabel = document.getElementById('targetLabel');
+const prevDemo = document.getElementById('prevDemo');
+const nextDemo = document.getElementById('nextDemo');
 
-const demo = {
-  azimuth: 137.65391583657777,
-  elevation: -74.76117453970583,
-  fov: 100,
-};
+const demos = [
+  {
+    image: 'assets/demo-panorama.jpg',
+    target: 'pink stool',
+    title: 'Locate the pink stool in the distorted bottom region.',
+    body: 'Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.',
+    azimuth: 137.65391583657777,
+    elevation: -74.76117453970583,
+    fov: 100,
+  },
+  {
+    image: 'assets/demo-play-boat.jpg',
+    target: "colorful wooden children's play boat",
+    title: "Locate the colorful wooden children's play boat near the panorama boundary.",
+    body: 'This target sits close to the left-right seam after a 180° panorama rotation. Hold and drag to see how the projection tool turns a global 360° location into a local perspective crop.',
+    azimuth: 177.32868871463714,
+    elevation: 3.4507171963325236,
+    fov: 100,
+  },
+];
 
 const panoImg = new Image();
-panoImg.src = 'assets/demo-panorama.jpg';
-
 const sourceCanvas = document.createElement('canvas');
 const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
 let sourceData;
+let activeDemoIndex = 0;
 let drawRect = { x: 0, y: 0, w: 1, h: 1 };
-let currentAz = demo.azimuth;
-let currentEl = demo.elevation;
+let currentAz = demos[0].azimuth;
+let currentEl = demos[0].elevation;
 let cursorX = 0;
 let cursorY = 0;
-let fov = demo.fov;
+let fov = demos[0].fov;
 let isInspecting = false;
 let isPointerInside = false;
 let renderQueued = false;
@@ -35,10 +55,8 @@ let projectionQueued = false;
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
 const PROJECTION_SIZE = 500;
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
-
+function activeDemo() { return demos[activeDemoIndex]; }
+function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
 function degToRad(value) { return value * Math.PI / 180; }
 
 function resizeCanvas(canvas, width, height) {
@@ -66,12 +84,7 @@ function fitPanorama() {
     h = ch;
     w = h * imgRatio;
   }
-  drawRect = {
-    x: (cw - w) / 2,
-    y: (ch - h) / 2,
-    w,
-    h,
-  };
+  drawRect = { x: (cw - w) / 2, y: (ch - h) / 2, w, h };
 }
 
 function drawMarker(az, el, color, radius) {
@@ -103,16 +116,13 @@ function renderPanorama() {
   panoCtx.fillStyle = '#020506';
   panoCtx.fillRect(0, 0, panoCanvas.width, panoCanvas.height);
   panoCtx.drawImage(panoImg, drawRect.x, drawRect.y, drawRect.w, drawRect.h);
-
   panoCtx.save();
   panoCtx.fillStyle = 'rgba(2, 5, 6, 0.08)';
   panoCtx.fillRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h);
   panoCtx.restore();
-
+  const demo = activeDemo();
   drawMarker(demo.azimuth, demo.elevation, 'rgba(243, 201, 91, 0.95)', 9);
-  if (isPointerInside) {
-    drawMarker(currentAz, currentEl, 'rgba(85, 214, 210, 0.95)', isInspecting ? 8 : 5);
-  }
+  if (isPointerInside) drawMarker(currentAz, currentEl, 'rgba(85, 214, 210, 0.95)', isInspecting ? 8 : 5);
 }
 
 function updateReadout() {
@@ -129,6 +139,14 @@ function updateCursorLabel() {
   cursorLabel.textContent = `Az ${currentAz.toFixed(1)}° · El ${currentEl.toFixed(1)}°`;
   cursorLabel.style.left = `${cursorX}px`;
   cursorLabel.style.top = `${cursorY}px`;
+}
+
+function updateDemoText() {
+  const demo = activeDemo();
+  demoKicker.textContent = `Interactive task demo · ${activeDemoIndex + 1} / ${demos.length}`;
+  demoTitle.textContent = demo.title;
+  demoBody.textContent = demo.body;
+  targetLabel.textContent = `Target query: ${demo.target}`;
 }
 
 function queueRender() {
@@ -191,6 +209,22 @@ function hideProjection() {
   queueRender();
 }
 
+function loadDemo(index) {
+  activeDemoIndex = (index + demos.length) % demos.length;
+  const demo = activeDemo();
+  hideProjection();
+  sourceData = undefined;
+  currentAz = demo.azimuth;
+  currentEl = demo.elevation;
+  fov = demo.fov;
+  updateDemoText();
+  updateCursorLabel();
+  updateReadout();
+  panoCtx.fillStyle = '#020506';
+  panoCtx.fillRect(0, 0, panoCanvas.width, panoCanvas.height);
+  panoImg.src = demo.image;
+}
+
 function renderProjection(centerAz, centerEl, fovDeg) {
   if (!sourceData) return;
   const out = projectionCtx.createImageData(PROJECTION_SIZE, PROJECTION_SIZE);
@@ -201,7 +235,6 @@ function renderProjection(centerAz, centerEl, fovDeg) {
   const yaw = degToRad(centerAz);
   const pitch = degToRad(centerEl);
   const tanHalf = Math.tan(degToRad(fovDeg) / 2);
-
   const cp = Math.cos(pitch);
   const forward = [Math.sin(yaw) * cp, Math.sin(pitch), Math.cos(yaw) * cp];
   const right = [Math.cos(yaw), 0, -Math.sin(yaw)];
@@ -210,7 +243,6 @@ function renderProjection(centerAz, centerEl, fovDeg) {
     forward[2] * right[0] - forward[0] * right[2],
     forward[0] * right[1] - forward[1] * right[0],
   ];
-
   let oi = 0;
   for (let py = 0; py < PROJECTION_SIZE; py++) {
     const cameraY = (1 - 2 * (py + 0.5) / PROJECTION_SIZE) * tanHalf;
@@ -223,7 +255,6 @@ function renderProjection(centerAz, centerEl, fovDeg) {
       dx *= invLen;
       dy *= invLen;
       dz *= invLen;
-
       const srcYaw = Math.atan2(dx, dz);
       const srcPitch = Math.asin(clamp(dy, -1, 1));
       let sx = Math.floor(((srcYaw + Math.PI) / (2 * Math.PI)) * srcW);
@@ -259,15 +290,12 @@ panoCanvas.addEventListener('pointerdown', event => {
 });
 
 panoCanvas.addEventListener('pointerup', event => {
-  if (panoCanvas.hasPointerCapture(event.pointerId)) {
-    panoCanvas.releasePointerCapture(event.pointerId);
-  }
+  if (panoCanvas.hasPointerCapture(event.pointerId)) panoCanvas.releasePointerCapture(event.pointerId);
   hideProjection();
 });
 
 panoCanvas.addEventListener('pointercancel', hideProjection);
 panoCanvas.addEventListener('lostpointercapture', hideProjection);
-
 panoCanvas.addEventListener('pointerleave', () => {
   isPointerInside = false;
   if (!isInspecting) cursorLabel.classList.remove('visible');
@@ -282,6 +310,16 @@ panoCanvas.addEventListener('wheel', event => {
   queueProjection();
 }, { passive: false });
 
+function handleNav(event, direction) {
+  event.preventDefault();
+  event.stopPropagation();
+  loadDemo(activeDemoIndex + direction);
+}
+prevDemo.addEventListener('click', event => handleNav(event, -1));
+nextDemo.addEventListener('click', event => handleNav(event, 1));
+prevDemo.addEventListener('pointerdown', event => event.stopPropagation());
+nextDemo.addEventListener('pointerdown', event => event.stopPropagation());
+
 window.addEventListener('resize', resize);
 
 panoImg.addEventListener('load', () => {
@@ -291,4 +329,8 @@ panoImg.addEventListener('load', () => {
   sourceData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
   resize();
   updateReadout();
+  if (isInspecting) queueProjection();
 });
+
+resize();
+loadDemo(0);

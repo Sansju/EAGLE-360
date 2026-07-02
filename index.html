@@ -30,10 +30,12 @@
     <section class="interactive-stage" aria-label="Interactive panorama projection demo">
       <canvas id="panoCanvas" aria-label="Equirectangular panorama demo"></canvas>
       <div class="demo-guide" aria-label="Demo instructions">
-        <p class="demo-kicker">Interactive task demo</p>
-        <h2>Locate a round pink object in the distorted bottom region.</h2>
-        <p>Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.</p>
+        <p class="demo-kicker" id="demoKicker">Interactive task demo · 1 / 2</p>
+        <h2 id="demoTitle">Locate the pink stool in the distorted bottom region.</h2>
+        <p id="demoBody">Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.</p>
       </div>
+      <button class="demo-nav demo-nav-prev" id="prevDemo" type="button" aria-label="Previous panorama"></button>
+      <button class="demo-nav demo-nav-next" id="nextDemo" type="button" aria-label="Next panorama"></button>
       <div class="cursor-label" id="cursorLabel" aria-hidden="true">Az 137.7° · El -74.8°</div>
       <div class="projection-panel" id="projectionPanel" aria-label="Perspective projection preview">
         <div class="projection-header">
@@ -46,7 +48,7 @@
           <span id="elReadout">El -74.8°</span>
           <span id="fovReadout">FOV 100°</span>
         </div>
-        <p class="target-label">Target query: round pink decorative plate</p>
+        <p class="target-label" id="targetLabel">Target query: pink stool</p>
       </div>
     </section>
   </header>
