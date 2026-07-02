@@ -12,6 +12,7 @@
 
 <div align="center">
   <a href="#"><img src="https://img.shields.io/badge/Paper-coming_soon-b31b1b.svg" alt="Paper"></a>
+  <a href="https://sansju.github.io/EAGLE-360/"><img src="https://img.shields.io/badge/Project-Page-55d6d2.svg" alt="Project Page"></a>
   <a href="https://huggingface.co/Sansjudge/eagle360_qwen3vl_grpo"><img src="https://img.shields.io/badge/Model-HuggingFace-yellow.svg" alt="Model"></a>
   <a href="https://huggingface.co/datasets/Sansjudge/eagle360_test"><img src="https://img.shields.io/badge/Dataset-HuggingFace-yellow.svg" alt="Dataset"></a>
   <a href="#running-evaluation"><img src="https://img.shields.io/badge/Eval-available-blue.svg" alt="Eval"></a>
