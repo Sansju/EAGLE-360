@@ -20,7 +20,7 @@ const prevCase = document.getElementById('prevCase');
 const nextCase = document.getElementById('nextCase');
 const caseCounter = document.getElementById('caseCounter');
 
-const GUIDE_BODY = 'Move across the panorama to read azimuth and elevation. Hold the mouse button to call the 100° perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.';
+const GUIDE_BODY = 'This interactive demo simulates an MLLM embodied 360° search process: overview the panorama, move the viewing direction, and zoom the FOV to localize the target. Move across the panorama to read azimuth and elevation. Hold the mouse button to call the perspective projection tool; keep holding and drag to inspect other directions. Scroll while holding to zoom the FOV.';
 
 const demos = [
   {
