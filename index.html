@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EAGLE-360: Embodied Active Global-to-Local Exploration in 360°</title>
+  <meta name="description" content="EAGLE-360 project page: active global-to-local exploration for object search in 360-degree panoramic scenes.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero" id="top">
+    <nav class="topbar" aria-label="Project links">
+      <a class="brand" href="#top">EAGLE-360</a>
+      <div class="navlinks">
+        <a href="https://github.com/Sansju/EAGLE-360">Code</a>
+        <a href="https://huggingface.co/datasets/Sansjudge/eagle360_test">Dataset</a>
+        <a href="https://huggingface.co/Sansjudge/eagle360_qwen3vl_grpo">Model</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </nav>
+
+    <section class="title-block" aria-labelledby="page-title">
+      <p class="eyebrow">Embodied active visual search in panoramic worlds</p>
+      <h1 id="page-title">EAGLE-360</h1>
+      <p class="subtitle">Embodied Active Global-to-Local Exploration in 360°</p>
+      <p class="authors">Jingtao Xu · Zizhuo Lin · Jianwen Sun · Yi Yang · Yawei Luo</p>
+      <p class="affiliations">Zhejiang University · Central China Normal University</p>
+    </section>
+
+    <section class="interactive-stage" aria-label="Interactive panorama projection demo">
+      <canvas id="panoCanvas" aria-label="Equirectangular panorama demo"></canvas>
+      <div class="projection-panel" aria-label="Perspective projection preview">
+        <div class="projection-header">
+          <span>Perspective projection</span>
+          <span id="lockState">live</span>
+        </div>
+        <canvas id="projectionCanvas" aria-label="Projected perspective view"></canvas>
+        <div class="readout">
+          <span id="azReadout">Az 137.7°</span>
+          <span id="elReadout">El -74.8°</span>
+          <span id="fovReadout">FOV 100°</span>
+        </div>
+        <p class="target-label">Target query: round pink decorative plate</p>
+      </div>
+    </section>
+  </header>
+
+  <main class="content">
+    <section class="section intro-section">
+      <div class="section-copy">
+        <p class="section-kicker">Core idea</p>
+        <h2>From panoramic prior to precise local grounding.</h2>
+        <p>
+          EAGLE-360 studies target object search in complete equirectangular panoramas. Rather than starting from a fixed narrow view, the model first reasons over the global 360° scene, then actively calls a projection tool to inspect local perspective views and refine the final azimuth and elevation.
+        </p>
+      </div>
+      <div class="stat-strip" aria-label="Dataset summary">
+        <div><strong>14K+</strong><span>4K panoramas</span></div>
+        <div><strong>70K+</strong><span>multi-turn VQA rounds</span></div>
+        <div><strong>360°</strong><span>global-to-local exploration</span></div>
+      </div>
+    </section>
+
+    <section class="figure-section">
+      <img src="assets/teaser.png" alt="EAGLE-360 teaser showing panoramic target search challenges and global-to-local exploration.">
+      <p>
+        Standard MLLMs struggle with polar distortion, seam continuity, and fragmented local exploration. EAGLE-360 uses the full panorama as a global prior, then narrows the search through active perspective projections.
+      </p>
+    </section>
+
+    <section class="section method-section">
+      <div class="section-copy wide">
+        <p class="section-kicker">Method</p>
+        <h2>A global-to-local search loop for 360° scenes.</h2>
+      </div>
+      <div class="method-grid">
+        <article>
+          <span>01</span>
+          <h3>Global panoramic reasoning</h3>
+          <p>The model receives the full ERP panorama and forms an initial spherical prior over likely target directions.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Active projection</h3>
+          <p>It invokes a rotate-and-project tool to inspect perspective views with controllable azimuth, elevation, and FOV.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Fine-grained localization</h3>
+          <p>Through multi-turn refinement, EAGLE-360 outputs the final azimuth and elevation for the target object.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="figure-section pipeline-section">
+      <img src="assets/pipeline.png" alt="EAGLE-360 training and inference pipeline.">
+      <p>
+        The pipeline combines panoramic Rolling RoPE, supervised fine-tuning, and GRPO to elicit tool-calling spatial reasoning over continuous 360° scenes.
+      </p>
+    </section>
+
+    <section class="section resources-section">
+      <div class="section-copy">
+        <p class="section-kicker">Resources</p>
+        <h2>Code, public test split, and checkpoint are released.</h2>
+        <p>
+          The public repository contains the evaluator and panoramic model patches. The released Hugging Face dataset includes the public test split, and the model repository hosts the merged EAGLE-360 Qwen3-VL GRPO checkpoint.
+        </p>
+      </div>
+      <div class="resource-links">
+        <a href="https://github.com/Sansju/EAGLE-360"><span>GitHub</span><strong>Sansju/EAGLE-360</strong></a>
+        <a href="https://huggingface.co/datasets/Sansjudge/eagle360_test"><span>Dataset</span><strong>Sansjudge/eagle360_test</strong></a>
+        <a href="https://huggingface.co/Sansjudge/eagle360_qwen3vl_grpo"><span>Model</span><strong>Sansjudge/eagle360_qwen3vl_grpo</strong></a>
+      </div>
+    </section>
+
+    <section class="section citation-section" id="citation">
+      <div class="section-copy wide">
+        <p class="section-kicker">Citation</p>
+        <h2>Cite EAGLE-360.</h2>
+      </div>
+      <pre><code>@misc{xu2026eagle360,
+  title  = {EAGLE-360: Embodied Active Global-to-Local Exploration in 360°},
+  author = {Xu, Jingtao and Lin, Zizhuo and Sun, Jianwen and Yang, Yi and Luo, Yawei},
+  year   = {2026}
+}</code></pre>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
