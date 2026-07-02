@@ -149,6 +149,11 @@ h1 {
   pointer-events: none;
 }
 
+.demo-guide.guide-right {
+  left: auto;
+  right: clamp(16px, 3vw, 42px);
+}
+
 .demo-kicker {
   margin: 0 0 8px;
   color: var(--gold);
@@ -465,6 +470,7 @@ h1 {
   .navlinks a { padding: 7px 10px; font-size: 0.85rem; }
   .interactive-stage { min-height: 69vh; }
   .demo-guide { top: 12px; left: 12px; padding: 13px; }
+  .demo-guide.guide-right { left: 12px; right: 12px; width: auto; }
   .demo-guide h2 { font-size: 1.12rem; }
   .demo-guide p:not(.demo-kicker) { font-size: 0.8rem; }
   .demo-nav { width: 38px; height: 76px; }

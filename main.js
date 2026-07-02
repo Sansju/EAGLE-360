@@ -11,6 +11,7 @@ const inspectState = document.getElementById('inspectState');
 const demoKicker = document.getElementById('demoKicker');
 const demoTitle = document.getElementById('demoTitle');
 const demoBody = document.getElementById('demoBody');
+const demoGuide = document.querySelector('.demo-guide');
 const targetLabel = document.getElementById('targetLabel');
 const prevDemo = document.getElementById('prevDemo');
 const nextDemo = document.getElementById('nextDemo');
@@ -72,15 +73,6 @@ const demos = [
     elevation: -15.458380894487242,
     fov: 100,
   },
-  {
-    image: 'assets/demo-544.webp',
-    target: 'a flat-screen television mounted on the wall',
-    title: 'Find a flat-screen television mounted on the wall in the panorama.',
-    body: GUIDE_BODY,
-    azimuth: -2.7387258563525596,
-    elevation: 1.1771339939954135,
-    fov: 100,
-  },
 ];
 
 const panoImg = new Image();
@@ -135,6 +127,36 @@ function fitPanorama() {
   drawRect = { x: (cw - w) / 2, y: (ch - h) / 2, w, h };
 }
 
+function markerToCssPoint(az, el) {
+  return {
+    x: (drawRect.x + ((az + 180) / 360) * drawRect.w) / DPR,
+    y: (drawRect.y + ((90 - el) / 180) * drawRect.h) / DPR,
+  };
+}
+
+function updateGuidePlacement() {
+  if (!demoGuide || !drawRect.w || !drawRect.h) return;
+  const stageRect = panoCanvas.parentElement.getBoundingClientRect();
+  const marker = markerToCssPoint(activeDemo().azimuth, activeDemo().elevation);
+  const markerX = stageRect.left + marker.x;
+  const markerY = stageRect.top + marker.y;
+  const guideWidth = demoGuide.offsetWidth;
+  const guideHeight = demoGuide.offsetHeight;
+  const compact = window.matchMedia('(max-width: 860px)').matches;
+  const marginX = compact ? 12 : clamp(window.innerWidth * 0.03, 16, 42);
+  const marginY = compact ? 12 : clamp(window.innerWidth * 0.03, 16, 38);
+  const pad = 88;
+  const leftGuide = {
+    left: stageRect.left + marginX - pad,
+    right: stageRect.left + marginX + guideWidth + pad,
+    top: stageRect.top + marginY - pad,
+    bottom: stageRect.top + marginY + guideHeight + pad,
+  };
+  const hasRightSlot = stageRect.width >= guideWidth * 2 + marginX * 2 + 48;
+  const overlapsLeftGuide = markerX >= leftGuide.left && markerX <= leftGuide.right && markerY >= leftGuide.top && markerY <= leftGuide.bottom;
+  demoGuide.classList.toggle('guide-right', hasRightSlot && overlapsLeftGuide);
+}
+
 function drawMarker(az, el, color, radius) {
   const x = drawRect.x + ((az + 180) / 360) * drawRect.w;
   const y = drawRect.y + ((90 - el) / 180) * drawRect.h;
@@ -160,6 +182,7 @@ function drawMarker(az, el, color, radius) {
 function renderPanorama() {
   if (!panoImg.complete || !panoImg.naturalWidth) return;
   fitPanorama();
+  updateGuidePlacement();
   panoCtx.clearRect(0, 0, panoCanvas.width, panoCanvas.height);
   panoCtx.fillStyle = '#020506';
   panoCtx.fillRect(0, 0, panoCanvas.width, panoCanvas.height);
@@ -266,6 +289,7 @@ function loadDemo(index) {
   currentEl = demo.elevation;
   fov = demo.fov;
   updateDemoText();
+  updateGuidePlacement();
   updateCursorLabel();
   updateReadout();
   panoCtx.fillStyle = '#020506';
