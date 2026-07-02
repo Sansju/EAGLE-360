@@ -116,6 +116,16 @@ h1 {
   font-size: clamp(0.9rem, 1.3vw, 1rem);
 }
 
+.authors sup,
+.affiliations sup {
+  color: var(--cyan);
+  font-size: 0.7em;
+  font-weight: 850;
+  margin-left: 1px;
+}
+
+.affiliations sup { margin-right: 2px; }
+
 .interactive-stage {
   position: relative;
   width: 100vw;
@@ -382,12 +392,12 @@ h1 {
   font-size: clamp(1rem, 1.35vw, 1.22rem);
 }
 
-.stat-strip {
+.idea-flow {
   display: grid;
   gap: 12px;
 }
 
-.stat-strip div,
+.idea-flow article,
 .method-grid article,
 .challenge-grid article,
 .resource-links a,
@@ -396,23 +406,32 @@ h1 {
   background: rgba(255, 255, 255, 0.66);
 }
 
-.stat-strip div {
-  padding: 22px;
+.idea-flow article {
+  padding: 20px;
   border-radius: 8px;
 }
 
-.stat-strip strong {
+.idea-flow span {
   display: block;
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  line-height: 0.9;
-  color: #081417;
+  color: var(--coral);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.stat-strip span {
+.idea-flow strong {
   display: block;
   margin-top: 8px;
+  color: #081417;
+  font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+  line-height: 1.05;
+}
+
+.idea-flow p {
+  margin: 10px 0 0;
   color: #5c6970;
-  font-weight: 700;
+  font-size: 0.96rem;
 }
 
 .challenge-section {
@@ -520,6 +539,33 @@ h1 {
 .metric-grid p {
   margin: 12px 0 0;
   color: rgba(246, 242, 234, 0.68);
+}
+
+.metric-notes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.metric-notes article {
+  border: 1px solid rgba(246, 242, 234, 0.14);
+  border-radius: 8px;
+  background: rgba(246, 242, 234, 0.05);
+  padding: 15px;
+}
+
+.metric-notes strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.metric-notes p {
+  margin: 7px 0 0;
+  color: rgba(246, 242, 234, 0.68);
+  font-size: 0.9rem;
+  line-height: 1.42;
 }
 
 .results-table-wrap {
@@ -818,6 +864,7 @@ h1 {
   .method-grid,
   .challenge-grid,
   .metric-grid,
+  .metric-notes,
   .analysis-grid,
   .case-card { grid-template-columns: 1fr; }
   .section { padding: 48px 18px; }

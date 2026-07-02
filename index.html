@@ -24,8 +24,8 @@
       <p class="eyebrow">Embodied active visual search in panoramic worlds</p>
       <h1 id="page-title">EAGLE-360</h1>
       <p class="subtitle">Embodied Active Global-to-Local Exploration in 360°</p>
-      <p class="authors">Jingtao Xu · Zizhuo Lin · Jianwen Sun · Yi Yang · Yawei Luo</p>
-      <p class="affiliations">Zhejiang University · Central China Normal University</p>
+      <p class="authors">Jingtao Xu<sup>1</sup> · Zizhuo Lin<sup>1</sup> · Jianwen Sun<sup>2</sup> · Yi Yang<sup>1</sup> · Yawei Luo<sup>1</sup></p>
+      <p class="affiliations"><sup>1</sup>Zhejiang University · <sup>2</sup>Central China Normal University</p>
     </section>
 
     <div class="demo-guide" aria-label="Demo instructions">
@@ -67,10 +67,22 @@
           EAGLE-360 studies target object search in complete equirectangular panoramas. Rather than starting from a fixed narrow view, the model first reasons over the global 360° scene, then actively calls a projection tool to inspect local perspective views and refine the final azimuth and elevation.
         </p>
       </div>
-      <div class="stat-strip" aria-label="Dataset summary">
-        <div><strong>14K+</strong><span>4K panoramas</span></div>
-        <div><strong>70K+</strong><span>multi-turn VQA rounds</span></div>
-        <div><strong>360°</strong><span>global-to-local exploration</span></div>
+      <div class="idea-flow" aria-label="Global-to-local task flow">
+        <article>
+          <span>Input</span>
+          <strong>Full panorama + target query</strong>
+          <p>The model starts from the complete equirectangular image instead of a fixed perspective crop.</p>
+        </article>
+        <article>
+          <span>Action</span>
+          <strong>Rotate and project</strong>
+          <p>It selects azimuth, elevation, and FOV to inspect local perspective views around promising regions.</p>
+        </article>
+        <article>
+          <span>Output</span>
+          <strong>Angular coordinates</strong>
+          <p>The final answer reports the target direction as azimuth and elevation in the 360° scene.</p>
+        </article>
       </div>
     </section>
 
@@ -149,9 +161,15 @@
         </p>
       </div>
       <div class="metric-grid" aria-label="EAGLE-360 headline metrics">
-        <article><span>Acc.</span><strong>64.44%</strong><p>final coordinate accuracy</p></article>
+        <article><span>Acc.</span><strong>64.44%</strong><p>final bFOV accuracy</p></article>
         <article><span>GCD @ 50°</span><strong>96.12%</strong><p>within the angular threshold</p></article>
         <article><span>Fail</span><strong>2.05%</strong><p>low invalid-answer rate</p></article>
+      </div>
+      <div class="metric-notes" aria-label="Metric definitions">
+        <article><strong>Acc.</strong><p>bFOV accuracy: whether the submitted view covers the target object.</p></article>
+        <article><strong>GCD</strong><p>Great-circle distance between predicted and ground-truth spherical coordinates, measured in degrees.</p></article>
+        <article><strong>GCD @ 50°</strong><p>The proportion of predictions whose GCD is no larger than 50°.</p></article>
+        <article><strong>Fail</strong><p>The rate of invalid, missing, or failed final submissions.</p></article>
       </div>
       <div class="results-table-wrap" aria-label="Main quantitative comparison">
         <table class="results-table">
