@@ -29,10 +29,11 @@
 
     <section class="interactive-stage" aria-label="Interactive panorama projection demo">
       <canvas id="panoCanvas" aria-label="Equirectangular panorama demo"></canvas>
-      <div class="projection-panel" aria-label="Perspective projection preview">
+      <div class="cursor-label" id="cursorLabel" aria-hidden="true">Az 137.7° · El -74.8°</div>
+      <div class="projection-panel" id="projectionPanel" aria-label="Perspective projection preview">
         <div class="projection-header">
-          <span>Perspective projection</span>
-          <span id="lockState">live</span>
+          <span>Hold to inspect</span>
+          <span id="inspectState">100° FOV</span>
         </div>
         <canvas id="projectionCanvas" aria-label="Projected perspective view"></canvas>
         <div class="readout">

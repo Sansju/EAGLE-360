@@ -2,10 +2,12 @@ const panoCanvas = document.getElementById('panoCanvas');
 const panoCtx = panoCanvas.getContext('2d');
 const projectionCanvas = document.getElementById('projectionCanvas');
 const projectionCtx = projectionCanvas.getContext('2d', { willReadFrequently: false });
+const projectionPanel = document.getElementById('projectionPanel');
+const cursorLabel = document.getElementById('cursorLabel');
 const azReadout = document.getElementById('azReadout');
 const elReadout = document.getElementById('elReadout');
 const fovReadout = document.getElementById('fovReadout');
-const lockState = document.getElementById('lockState');
+const inspectState = document.getElementById('inspectState');
 
 const demo = {
   azimuth: 137.65391583657777,
@@ -22,8 +24,11 @@ let sourceData;
 let drawRect = { x: 0, y: 0, w: 1, h: 1 };
 let currentAz = demo.azimuth;
 let currentEl = demo.elevation;
+let cursorX = 0;
+let cursorY = 0;
 let fov = demo.fov;
-let locked = false;
+let isInspecting = false;
+let isPointerInside = false;
 let renderQueued = false;
 let projectionQueued = false;
 
@@ -35,7 +40,6 @@ function clamp(value, min, max) {
 }
 
 function degToRad(value) { return value * Math.PI / 180; }
-function radToDeg(value) { return value * 180 / Math.PI; }
 
 function resizeCanvas(canvas, width, height) {
   canvas.width = Math.max(1, Math.floor(width * DPR));
@@ -47,7 +51,9 @@ function resize() {
   resizeCanvas(panoCanvas, rect.width, rect.height);
   projectionCanvas.width = PROJECTION_SIZE;
   projectionCanvas.height = PROJECTION_SIZE;
+  updateCursorLabel();
   queueRender();
+  if (isInspecting) queueProjection();
 }
 
 function fitPanorama() {
@@ -99,19 +105,30 @@ function renderPanorama() {
   panoCtx.drawImage(panoImg, drawRect.x, drawRect.y, drawRect.w, drawRect.h);
 
   panoCtx.save();
-  panoCtx.fillStyle = 'rgba(2, 5, 6, 0.12)';
+  panoCtx.fillStyle = 'rgba(2, 5, 6, 0.08)';
   panoCtx.fillRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h);
   panoCtx.restore();
 
   drawMarker(demo.azimuth, demo.elevation, 'rgba(243, 201, 91, 0.95)', 9);
-  drawMarker(currentAz, currentEl, 'rgba(85, 214, 210, 0.95)', 6);
+  if (isPointerInside) {
+    drawMarker(currentAz, currentEl, 'rgba(85, 214, 210, 0.95)', isInspecting ? 8 : 5);
+  }
 }
 
 function updateReadout() {
-  azReadout.textContent = `Az ${currentAz.toFixed(1)}°`;
-  elReadout.textContent = `El ${currentEl.toFixed(1)}°`;
-  fovReadout.textContent = `FOV ${Math.round(fov)}°`;
-  lockState.textContent = locked ? 'locked' : 'live';
+  const az = currentAz.toFixed(1);
+  const el = currentEl.toFixed(1);
+  const fovText = `FOV ${Math.round(fov)}°`;
+  azReadout.textContent = `Az ${az}°`;
+  elReadout.textContent = `El ${el}°`;
+  fovReadout.textContent = fovText;
+  inspectState.textContent = fovText;
+}
+
+function updateCursorLabel() {
+  cursorLabel.textContent = `Az ${currentAz.toFixed(1)}° · El ${currentEl.toFixed(1)}°`;
+  cursorLabel.style.left = `${cursorX}px`;
+  cursorLabel.style.top = `${cursorY}px`;
 }
 
 function queueRender() {
@@ -124,7 +141,7 @@ function queueRender() {
 }
 
 function queueProjection() {
-  if (projectionQueued) return;
+  if (!isInspecting || projectionQueued) return;
   projectionQueued = true;
   requestAnimationFrame(() => {
     projectionQueued = false;
@@ -143,6 +160,8 @@ function pointerToAngles(event) {
   return {
     az: u * 360 - 180,
     el: 90 - v * 180,
+    labelX: clamp(event.clientX - rect.left, 74, rect.width - 74),
+    labelY: clamp(event.clientY - rect.top, 32, rect.height - 12),
   };
 }
 
@@ -150,7 +169,26 @@ function setViewFromEvent(event) {
   const angles = pointerToAngles(event);
   currentAz = angles.az;
   currentEl = angles.el;
+  cursorX = angles.labelX;
+  cursorY = angles.labelY;
+  updateCursorLabel();
+  updateReadout();
+  queueRender();
+  if (isInspecting) queueProjection();
+}
+
+function showProjection() {
+  isInspecting = true;
+  projectionPanel.classList.add('visible');
+  cursorLabel.classList.add('visible');
+  updateReadout();
   queueProjection();
+}
+
+function hideProjection() {
+  isInspecting = false;
+  projectionPanel.classList.remove('visible');
+  queueRender();
 }
 
 function renderProjection(centerAz, centerEl, fovDeg) {
@@ -201,25 +239,46 @@ function renderProjection(centerAz, centerEl, fovDeg) {
   projectionCtx.putImageData(out, 0, 0);
 }
 
+panoCanvas.addEventListener('pointerenter', event => {
+  isPointerInside = true;
+  cursorLabel.classList.add('visible');
+  setViewFromEvent(event);
+});
+
 panoCanvas.addEventListener('pointermove', event => {
-  if (!locked) setViewFromEvent(event);
+  isPointerInside = true;
+  setViewFromEvent(event);
 });
 
 panoCanvas.addEventListener('pointerdown', event => {
-  locked = !locked;
+  event.preventDefault();
+  panoCanvas.setPointerCapture(event.pointerId);
+  isPointerInside = true;
   setViewFromEvent(event);
-  updateReadout();
+  showProjection();
+});
+
+panoCanvas.addEventListener('pointerup', event => {
+  if (panoCanvas.hasPointerCapture(event.pointerId)) {
+    panoCanvas.releasePointerCapture(event.pointerId);
+  }
+  hideProjection();
+});
+
+panoCanvas.addEventListener('pointercancel', hideProjection);
+panoCanvas.addEventListener('lostpointercapture', hideProjection);
+
+panoCanvas.addEventListener('pointerleave', () => {
+  isPointerInside = false;
+  if (!isInspecting) cursorLabel.classList.remove('visible');
+  queueRender();
 });
 
 panoCanvas.addEventListener('wheel', event => {
+  if (!isInspecting) return;
   event.preventDefault();
   fov = clamp(fov + Math.sign(event.deltaY) * 5, 45, 125);
-  queueProjection();
-}, { passive: false });
-
-projectionCanvas.addEventListener('wheel', event => {
-  event.preventDefault();
-  fov = clamp(fov + Math.sign(event.deltaY) * 5, 45, 125);
+  updateReadout();
   queueProjection();
 }, { passive: false });
 
@@ -231,5 +290,5 @@ panoImg.addEventListener('load', () => {
   sourceCtx.drawImage(panoImg, 0, 0);
   sourceData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
   resize();
-  queueProjection();
+  updateReadout();
 });

@@ -28,9 +28,9 @@ img { display: block; max-width: 100%; }
   min-height: 100vh;
   scroll-snap-align: start;
   display: grid;
-  grid-template-rows: auto auto 1fr;
-  gap: clamp(14px, 2vw, 24px);
-  padding: clamp(16px, 2vw, 26px);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: clamp(8px, 1.25vw, 16px);
+  padding: clamp(10px, 1.4vw, 18px);
   background: #061015;
   overflow: hidden;
 }
@@ -84,7 +84,7 @@ img { display: block; max-width: 100%; }
 
 .eyebrow,
 .section-kicker {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   color: var(--cyan);
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -94,28 +94,28 @@ img { display: block; max-width: 100%; }
 
 h1 {
   margin: 0;
-  font-size: clamp(3.4rem, 10vw, 9rem);
-  line-height: 0.82;
+  font-size: clamp(3.1rem, 8vw, 7.6rem);
+  line-height: 0.84;
   font-weight: 900;
   letter-spacing: 0;
 }
 
 .subtitle {
-  margin: clamp(12px, 1.8vw, 18px) 0 0;
-  font-size: clamp(1.05rem, 2.2vw, 1.7rem);
+  margin: clamp(8px, 1.1vw, 12px) 0 0;
+  font-size: clamp(1rem, 1.7vw, 1.42rem);
   color: rgba(246, 242, 234, 0.9);
 }
 
 .authors,
 .affiliations {
-  margin: 5px 0 0;
+  margin: 3px 0 0;
   color: var(--muted);
   font-size: clamp(0.9rem, 1.3vw, 1rem);
 }
 
 .interactive-stage {
   position: relative;
-  min-height: min(62vh, 690px);
+  min-height: min(72vh, 760px);
   border: 1px solid var(--line);
   overflow: hidden;
   background: #020506;
@@ -130,17 +130,50 @@ h1 {
   height: 100%;
 }
 
+.cursor-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 14px));
+  border: 1px solid rgba(246, 242, 234, 0.24);
+  background: rgba(7, 16, 19, 0.78);
+  backdrop-filter: blur(14px);
+  color: rgba(246, 242, 234, 0.94);
+  padding: 7px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.cursor-label.visible { opacity: 1; }
+
 .projection-panel {
   position: absolute;
   right: clamp(12px, 2vw, 24px);
   bottom: clamp(12px, 2vw, 24px);
-  width: min(34vw, 440px);
-  min-width: 300px;
-  border: 1px solid rgba(246, 242, 234, 0.22);
-  background: rgba(7, 16, 19, 0.82);
+  width: min(36vw, 480px);
+  min-width: 320px;
+  z-index: 4;
+  border: 1px solid rgba(246, 242, 234, 0.24);
+  background: rgba(7, 16, 19, 0.84);
   backdrop-filter: blur(18px);
   padding: 12px;
   box-shadow: 0 22px 56px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+  pointer-events: none;
+}
+
+.projection-panel.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
 }
 
 .projection-header,
@@ -155,7 +188,7 @@ h1 {
 }
 
 .projection-header span:last-child {
-  color: var(--green);
+  color: var(--cyan);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
