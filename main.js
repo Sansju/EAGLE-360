@@ -24,7 +24,7 @@ const demos = [
     target: 'pink stool',
     title: 'Find the pink stool in the panorama.',
     body: GUIDE_BODY,
-    challenge: 'Challenge: polar distortion · target stretched near the bottom pole',
+    challenge: 'Challenge: Polar Distortion',
     azimuth: 137.65391583657777,
     elevation: -74.76117453970583,
     fov: 100,
@@ -34,7 +34,7 @@ const demos = [
     target: "colorful wooden children's play boat",
     title: "Find the colorful wooden children's play boat in the panorama.",
     body: GUIDE_BODY,
-    challenge: 'Challenge: edge continuity · object lies close to the panorama seam',
+    challenge: 'Challenge: Edge Continuity',
     azimuth: 177.32868871463714,
     elevation: 3.4507171963325236,
     fov: 100,
@@ -44,17 +44,17 @@ const demos = [
     target: 'a round wall clock',
     title: 'Find a round wall clock in the panorama.',
     body: GUIDE_BODY,
-    challenge: 'Challenge: hard search · small wall object in a cluttered indoor scene',
+    challenge: 'Challenge: Hard Object Search',
     azimuth: -148.61800729761313,
     elevation: 23.0079856130375,
     fov: 100,
   },
   {
     image: 'assets/demo-155.webp',
-    target: 'a brown plush couch with two cushions',
-    title: 'Find a brown plush couch with two cushions in the panorama.',
+    target: 'a brown plush couch',
+    title: 'Find a brown plush couch in the panorama.',
     body: GUIDE_BODY,
-    challenge: 'Challenge: edge continuity · target sits on the left-right boundary',
+    challenge: 'Challenge: Edge Continuity',
     azimuth: 178.5558851001805,
     elevation: -14.670953815303278,
     fov: 100,
@@ -64,7 +64,7 @@ const demos = [
     target: 'a black refrigerator with a shiny handle',
     title: 'Find a black refrigerator with a shiny handle in the panorama.',
     body: GUIDE_BODY,
-    challenge: 'Challenge: hard search · dark object blends into indoor clutter',
+    challenge: 'Challenge: Hard Object Search',
     azimuth: -146.2529901330173,
     elevation: -16.729846941704974,
     fov: 100,
@@ -74,7 +74,7 @@ const demos = [
     target: 'a blue mountain bike',
     title: 'Find a blue mountain bike in the panorama.',
     body: GUIDE_BODY,
-    challenge: 'Challenge: hard search · target competes with repeated scene structures',
+    challenge: 'Challenge: Hard Object Search',
     azimuth: 95.8901445420024,
     elevation: -15.458380894487242,
     fov: 100,
@@ -188,11 +188,24 @@ function updateCursorLabel() {
   cursorLabel.style.top = `${cursorY}px`;
 }
 
+function updateDemoTitle(target) {
+  const prefix = document.createElement('span');
+  prefix.className = 'demo-title-affix';
+  prefix.textContent = 'Find';
+  const targetText = document.createElement('span');
+  targetText.className = 'demo-target';
+  targetText.textContent = target;
+  const suffix = document.createElement('span');
+  suffix.className = 'demo-title-affix';
+  suffix.textContent = 'in the panorama.';
+  demoTitle.replaceChildren(prefix, targetText, suffix);
+}
+
 function updateDemoText() {
   const demo = activeDemo();
   demoCount.textContent = `${activeDemoIndex + 1} / ${demos.length}`;
   demoChallenge.textContent = demo.challenge;
-  demoTitle.textContent = demo.title;
+  updateDemoTitle(demo.target);
   demoBody.textContent = demo.body;
   targetLabel.textContent = `Target query: ${demo.target}`;
 }
