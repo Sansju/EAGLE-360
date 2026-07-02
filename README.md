@@ -9,6 +9,9 @@
 </div>
 
 <br>
+<div align="center">
+  <b>Project Page:</b> <a href="https://sansju.github.io/EAGLE-360/">https://sansju.github.io/EAGLE-360/</a>
+</div>
 
 <div align="center">
   <a href="#"><img src="https://img.shields.io/badge/Paper-coming_soon-b31b1b.svg" alt="Paper"></a>
