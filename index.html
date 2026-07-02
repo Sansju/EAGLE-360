@@ -24,8 +24,8 @@
       <p class="eyebrow">Embodied active visual search in panoramic worlds</p>
       <h1 id="page-title">EAGLE-360</h1>
       <p class="subtitle">Embodied Active Global-to-Local Exploration in 360°</p>
-      <p class="authors">Jingtao Xu<sup>1</sup> · Zizhuo Lin<sup>1</sup> · Jianwen Sun<sup>2</sup> · Yi Yang<sup>1</sup> · Yawei Luo<sup>1</sup></p>
-      <p class="affiliations"><sup>1</sup>Zhejiang University · <sup>2</sup>Central China Normal University</p>
+      <p class="authors">Jingtao Xu<sup>1</sup> · Zizhuo Lin<sup>1</sup> · Jianwen Sun<sup>2</sup> · Yi Yang<sup>1</sup> · Yawei Luo<sup>1,*</sup></p>
+      <p class="affiliations"><sup>1</sup>Zhejiang University · <sup>2</sup>Central China Normal University · <sup>*</sup>Corresponding author</p>
     </section>
 
     <div class="demo-guide" aria-label="Demo instructions">
@@ -59,33 +59,6 @@
   </header>
 
   <main class="content">
-    <section class="section intro-section">
-      <div class="section-copy">
-        <p class="section-kicker">Core idea</p>
-        <h2>From panoramic prior to precise local grounding.</h2>
-        <p>
-          EAGLE-360 studies target object search in complete equirectangular panoramas. Rather than starting from a fixed narrow view, the model first reasons over the global 360° scene, then actively calls a projection tool to inspect local perspective views and refine the final azimuth and elevation.
-        </p>
-      </div>
-      <div class="idea-flow" aria-label="Global-to-local task flow">
-        <article>
-          <span>Input</span>
-          <strong>Full panorama + target query</strong>
-          <p>The model starts from the complete equirectangular image instead of a fixed perspective crop.</p>
-        </article>
-        <article>
-          <span>Action</span>
-          <strong>Rotate and project</strong>
-          <p>It selects azimuth, elevation, and FOV to inspect local perspective views around promising regions.</p>
-        </article>
-        <article>
-          <span>Output</span>
-          <strong>Angular coordinates</strong>
-          <p>The final answer reports the target direction as azimuth and elevation in the 360° scene.</p>
-        </article>
-      </div>
-    </section>
-
     <section class="section challenge-section">
       <div class="section-copy wide">
         <p class="section-kicker">Task motivation</p>
@@ -119,6 +92,33 @@
       </div>
     </section>
 
+    <section class="section intro-section">
+      <div class="section-copy">
+        <p class="section-kicker">Core idea</p>
+        <h2>From panoramic prior to precise local grounding.</h2>
+        <p>
+          EAGLE-360 studies target object search in complete equirectangular panoramas. Rather than starting from a fixed narrow view, the model first reasons over the global 360° scene, then actively calls a projection tool to inspect local perspective views and refine the final azimuth and elevation.
+        </p>
+      </div>
+      <div class="idea-flow" aria-label="Global-to-local task flow">
+        <article>
+          <span>Input</span>
+          <strong>Full panorama + target query</strong>
+          <p>The model starts from the complete equirectangular image instead of a fixed perspective crop.</p>
+        </article>
+        <article>
+          <span>Action</span>
+          <strong>Rotate and project</strong>
+          <p>It selects azimuth, elevation, and FOV to inspect local perspective views around promising regions.</p>
+        </article>
+        <article>
+          <span>Output</span>
+          <strong>Angular coordinates</strong>
+          <p>The final answer reports the target direction as azimuth and elevation in the 360° scene.</p>
+        </article>
+      </div>
+    </section>
+
     <section class="section method-section">
       <div class="section-copy wide">
         <p class="section-kicker">Method</p>
@@ -147,7 +147,7 @@
       <figure class="paper-figure pipeline-figure">
         <img src="assets/pipeline.png" loading="lazy" decoding="async" alt="EAGLE-360 training and inference pipeline.">
         <figcaption>
-          The training recipe combines panoramic position adaptation, supervised tool-use trajectories, and GRPO to encourage accurate multi-turn spatial refinement.
+          The training recipe combines RoPE Rolling, supervised tool-use trajectories, and GRPO to encourage accurate multi-turn spatial refinement over continuous panoramic topology.
         </figcaption>
       </figure>
     </section>
@@ -157,7 +157,7 @@
         <p class="section-kicker">Experiments</p>
         <h2>Strong search accuracy on the EAGLE-360 benchmark.</h2>
         <p>
-          We evaluate exact direction accuracy, great-circle distance, thresholded localization, and failure rate across proprietary models, open-source MLLMs, and fine-tuned panoramic agents.
+          We evaluate bFOV accuracy, great-circle distance, thresholded localization, and failure rate across proprietary models, open-source MLLMs, and fine-tuned panoramic agents.
         </p>
       </div>
       <div class="metric-grid" aria-label="EAGLE-360 headline metrics">
@@ -206,9 +206,9 @@
       <div class="experiment-block ablation-block">
         <div class="experiment-copy">
           <p class="mini-kicker">Ablation study</p>
-          <h3>Adaptive FOV, panoramic position handling, and GRPO each matter.</h3>
+          <h3>Adaptive FOV, RoPE Rolling, and GRPO each matter.</h3>
           <p>
-            The full EAGLE-360 model reaches 64.44% accuracy. Removing adaptive FOV causes the largest drop, while removing panoramic RoPE rolling or GRPO also substantially weakens directional accuracy. GRPO slightly trades off average distance metrics against a much stronger final answer accuracy, indicating that reinforcement learning mainly improves the active search and submission policy.
+            The full EAGLE-360 model reaches 64.44% accuracy. Removing adaptive FOV causes the largest drop, while removing RoPE Rolling or GRPO also substantially weakens directional accuracy. GRPO slightly trades off average distance metrics against a much stronger final answer accuracy, indicating that reinforcement learning mainly improves the active search and submission policy.
           </p>
         </div>
         <div class="ablation-table-wrap">
