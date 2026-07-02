@@ -185,6 +185,60 @@
           </tbody>
         </table>
       </div>
+      <div class="experiment-block ablation-block">
+        <div class="experiment-copy">
+          <p class="mini-kicker">Ablation study</p>
+          <h3>Adaptive FOV, panoramic position handling, and GRPO each matter.</h3>
+          <p>
+            The full EAGLE-360 model reaches 64.44% accuracy. Removing adaptive FOV causes the largest drop, while removing panoramic RoPE rolling or GRPO also substantially weakens directional accuracy. GRPO slightly trades off average distance metrics against a much stronger final answer accuracy, indicating that reinforcement learning mainly improves the active search and submission policy.
+          </p>
+        </div>
+        <div class="ablation-table-wrap">
+          <table class="results-table ablation-table">
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Acc. (%) ↑</th>
+                <th>Δ Acc.</th>
+                <th>GCD (°) ↓</th>
+                <th>GCD @ 50° (%) ↑</th>
+                <th>Fail (%) ↓</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>EAGLE-360 (w/o FOV)</td><td>39.44</td><td>-25.00</td><td>17.54</td><td>94.02</td><td>1.11</td></tr>
+              <tr><td>EAGLE-360 (w/o RoPE Rolling)</td><td>46.01</td><td>-18.43</td><td>16.15</td><td>94.72</td><td>2.70</td></tr>
+              <tr><td>EAGLE-360 (w/o GRPO)</td><td>46.94</td><td>-17.50</td><td>14.03</td><td>97.22</td><td>0.83</td></tr>
+              <tr class="best-row"><td>EAGLE-360</td><td>64.44</td><td>0.00</td><td>16.89</td><td>96.12</td><td>2.05</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="experiment-block step-analysis-block">
+        <div class="experiment-copy">
+          <p class="mini-kicker">Response-step analysis</p>
+          <h3>GRPO learns to inspect before answering.</h3>
+          <p>
+            SFT tends to submit early: most answers appear at Step 2, before the model has enough local evidence. GRPO shifts submission toward later turns, improves bFOV accuracy during intermediate search, and produces larger negative distance deltas, meaning each projection step more often moves the prediction closer to the target.
+          </p>
+        </div>
+        <div class="analysis-grid">
+          <figure class="analysis-figure">
+            <img src="assets/step-analysis.webp" loading="lazy" decoding="async" alt="Response-step submission rate and bFOV accuracy for SFT and GRPO.">
+            <figcaption>
+              GRPO delays submission from early turns to the main search window and reaches much higher bFOV accuracy during tool-use refinement.
+            </figcaption>
+          </figure>
+          <figure class="analysis-figure">
+            <img src="assets/step-delta.webp" loading="lazy" decoding="async" alt="Average distance delta per response step for SFT and GRPO.">
+            <figcaption>
+              Negative deltas indicate improvement. GRPO yields stronger distance reductions at early steps and continues to refine after SFT has largely saturated.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
     </section>
 
     <section class="section cases-section">

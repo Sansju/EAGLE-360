@@ -571,6 +571,77 @@ h1 {
   font-weight: 900;
 }
 
+.experiment-block {
+  margin-top: clamp(34px, 5vw, 58px);
+  border-top: 1px solid rgba(246, 242, 234, 0.14);
+  padding-top: clamp(28px, 4vw, 46px);
+}
+
+.experiment-copy {
+  max-width: 900px;
+}
+
+.mini-kicker {
+  margin: 0 0 10px;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.experiment-copy h3 {
+  margin: 0;
+  color: var(--paper);
+  font-size: clamp(1.55rem, 3vw, 2.75rem);
+  line-height: 1.02;
+}
+
+.experiment-copy p:not(.mini-kicker) {
+  margin: 16px 0 0;
+  color: rgba(246, 242, 234, 0.7);
+  font-size: clamp(0.98rem, 1.2vw, 1.12rem);
+}
+
+.ablation-table-wrap {
+  margin-top: 22px;
+  overflow-x: auto;
+  border: 1px solid rgba(246, 242, 234, 0.16);
+  border-radius: 8px;
+  background: rgba(246, 242, 234, 0.04);
+}
+
+.ablation-table { min-width: 820px; }
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.analysis-figure {
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(246, 242, 234, 0.18);
+  background: #f8f9fb;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+.analysis-figure img {
+  width: 100%;
+  background: #fff;
+}
+
+.analysis-figure figcaption {
+  margin: 0;
+  padding: 14px 16px 16px;
+  color: #43525a;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
 .cases-section {
   background: #f6f2ea;
 }
@@ -747,6 +818,7 @@ h1 {
   .method-grid,
   .challenge-grid,
   .metric-grid,
+  .analysis-grid,
   .case-card { grid-template-columns: 1fr; }
   .section { padding: 48px 18px; }
   .case-card img { border-right: 0; border-bottom: 1px solid rgba(7, 16, 19, 0.1); }
