@@ -8,9 +8,10 @@ const azReadout = document.getElementById('azReadout');
 const elReadout = document.getElementById('elReadout');
 const fovReadout = document.getElementById('fovReadout');
 const inspectState = document.getElementById('inspectState');
-const demoKicker = document.getElementById('demoKicker');
+const demoCount = document.getElementById('demoCount');
 const demoTitle = document.getElementById('demoTitle');
 const demoBody = document.getElementById('demoBody');
+const demoChallenge = document.getElementById('demoChallenge');
 const targetLabel = document.getElementById('targetLabel');
 const prevDemo = document.getElementById('prevDemo');
 const nextDemo = document.getElementById('nextDemo');
@@ -23,6 +24,7 @@ const demos = [
     target: 'pink stool',
     title: 'Find the pink stool in the panorama.',
     body: GUIDE_BODY,
+    challenge: 'Challenge: polar distortion · target stretched near the bottom pole',
     azimuth: 137.65391583657777,
     elevation: -74.76117453970583,
     fov: 100,
@@ -32,6 +34,7 @@ const demos = [
     target: "colorful wooden children's play boat",
     title: "Find the colorful wooden children's play boat in the panorama.",
     body: GUIDE_BODY,
+    challenge: 'Challenge: edge continuity · object lies close to the panorama seam',
     azimuth: 177.32868871463714,
     elevation: 3.4507171963325236,
     fov: 100,
@@ -41,6 +44,7 @@ const demos = [
     target: 'a round wall clock',
     title: 'Find a round wall clock in the panorama.',
     body: GUIDE_BODY,
+    challenge: 'Challenge: hard search · small wall object in a cluttered indoor scene',
     azimuth: -148.61800729761313,
     elevation: 23.0079856130375,
     fov: 100,
@@ -50,6 +54,7 @@ const demos = [
     target: 'a brown plush couch with two cushions',
     title: 'Find a brown plush couch with two cushions in the panorama.',
     body: GUIDE_BODY,
+    challenge: 'Challenge: edge continuity · target sits on the left-right boundary',
     azimuth: 178.5558851001805,
     elevation: -14.670953815303278,
     fov: 100,
@@ -59,6 +64,7 @@ const demos = [
     target: 'a black refrigerator with a shiny handle',
     title: 'Find a black refrigerator with a shiny handle in the panorama.',
     body: GUIDE_BODY,
+    challenge: 'Challenge: hard search · dark object blends into indoor clutter',
     azimuth: -146.2529901330173,
     elevation: -16.729846941704974,
     fov: 100,
@@ -68,6 +74,7 @@ const demos = [
     target: 'a blue mountain bike',
     title: 'Find a blue mountain bike in the panorama.',
     body: GUIDE_BODY,
+    challenge: 'Challenge: hard search · target competes with repeated scene structures',
     azimuth: 95.8901445420024,
     elevation: -15.458380894487242,
     fov: 100,
@@ -117,9 +124,10 @@ function fitPanorama() {
   const cw = panoCanvas.width;
   const ch = panoCanvas.height;
   const imgRatio = panoImg.naturalWidth / panoImg.naturalHeight;
+  const canvasRatio = cw / ch;
   let w = cw;
   let h = w / imgRatio;
-  if (h > ch) {
+  if (canvasRatio < imgRatio) {
     h = ch;
     w = h * imgRatio;
   }
@@ -182,7 +190,8 @@ function updateCursorLabel() {
 
 function updateDemoText() {
   const demo = activeDemo();
-  demoKicker.textContent = `Interactive task demo · ${activeDemoIndex + 1} / ${demos.length}`;
+  demoCount.textContent = `${activeDemoIndex + 1} / ${demos.length}`;
+  demoChallenge.textContent = demo.challenge;
   demoTitle.textContent = demo.title;
   demoBody.textContent = demo.body;
   targetLabel.textContent = `Target query: ${demo.target}`;
