@@ -10,6 +10,8 @@
 
 <br>
 <div align="center">
+  <b>Paper:</b> <a href="https://arxiv.org/abs/2607.02479">https://arxiv.org/abs/2607.02479</a>
+  <br>
   <b>Project Page:</b> <a href="https://sansju.github.io/EAGLE-360/">https://sansju.github.io/EAGLE-360/</a>
 </div>
 
