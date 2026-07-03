@@ -14,7 +14,7 @@
 </div>
 
 <div align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Paper-coming_soon-b31b1b.svg" alt="Paper"></a>
+  <a href="https://arxiv.org/abs/2607.02479"><img src="https://img.shields.io/badge/Paper-arXiv%3A2607.02479-b31b1b.svg" alt="Paper"></a>
   <a href="https://sansju.github.io/EAGLE-360/"><img src="https://img.shields.io/badge/Project-Page-55d6d2.svg" alt="Project Page"></a>
   <a href="https://huggingface.co/Sansjudge/eagle360_qwen3vl_grpo"><img src="https://img.shields.io/badge/Model-HuggingFace-yellow.svg" alt="Model"></a>
   <a href="https://huggingface.co/datasets/Sansjudge/eagle360_test"><img src="https://img.shields.io/badge/Dataset-HuggingFace-yellow.svg" alt="Dataset"></a>
@@ -127,10 +127,14 @@ Results are saved as `eval_{model_name}_{timestamp}.json`.
 ## Citation
 
 ```bibtex
-@misc{xu2026eagle360,
-  title  = {EAGLE-360: Embodied Active Global-to-Local Exploration in 360°},
-  author = {Xu, Jingtao and Lin, Zizhuo and Sun, Jianwen and Yang, Yi and Luo, Yawei},
-  year   = {2026}
+@misc{xu2026eagle360embodiedactiveglobaltolocal,
+      title={EAGLE-360: Embodied Active Global-to-Local Exploration in 360$^\circ$},
+      author={Jingtao Xu and Zizhuo Lin and Jianwen Sun and Yi Yang and Yawei Luo},
+      year={2026},
+      eprint={2607.02479},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2607.02479},
 }
 ```
 
